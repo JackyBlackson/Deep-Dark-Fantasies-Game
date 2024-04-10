@@ -17,7 +17,7 @@ export class Spirit extends ElementWrapper {
         this.element = spirit;
 
         // 设置 img 元素的 src 属性
-        spirit.src = "/assets/images/spirits/enemies/default/kobe.webp";
+        spirit.src = "assets/images/spirits/enemies/default/kobe.webp";
 
         // 添加 cssClass 为 spirit
         Droppable.addInterfaceTo(this);
