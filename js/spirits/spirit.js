@@ -7,7 +7,7 @@ import { CollisionProcessor } from "../physics/collisions/collision.js";
 export class Spirit extends ElementWrapper {
     constructor(element) {
         super(element);
-        this.speed = 10;
+        this.speed = 5;
     }
 
     //Override

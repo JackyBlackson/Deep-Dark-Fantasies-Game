@@ -18,6 +18,8 @@ export class Collision extends ElementWrapper {
         originList.forEach(origElement => {
             targetList.forEach(targElement => {
                 if (checkOverlap(origElement, targElement)) {
+                    // console.log(origElement);
+                    // console.log(targElement);
                     origElement.originalType.collision().with(origElement, targElement);
                     targElement.originalType.collision().with(targElement, origElement);
                 }

@@ -1,4 +1,5 @@
 import { removeAllReferences } from "../utilities/common_utilities.js";
+import { getMargin } from "../utilities/common_utilities.js";
 
 class Wrapper {
     constructor() {
@@ -89,8 +90,8 @@ class Wrapper {
 }
 
 export class ElementWrapper {
-    constructor(element = null) {
-        if (element == null) { // 无参构造
+    constructor(element) {
+        if (!element) { // 无参构造
             this.element = this.summon();
         } else {
             // 有参数，那么直接赋值
@@ -153,6 +154,34 @@ export class ElementWrapper {
 
     getName() {
         return this.constructor.name;
+    }
+
+    setX(x) {
+        this.element.style.left = getMargin() + x + "px";
+    }
+    
+    setY(y) {
+        this.element.style.top = y + "px";
+    }
+    
+    getX() {
+        return (parseInt(this.element.style.left) || getMargin()) - getMargin();
+    }
+    
+    getY(y) {
+        return parseInt(this.element.style.top);
+    }
+    
+    setPosition(x, y) {
+        this.setX(x);
+        this.setY(y);
+    }
+
+    getPosition() {
+        return {
+            x: this.getX(),
+            y:this.getY(),
+        }
     }
 }
 

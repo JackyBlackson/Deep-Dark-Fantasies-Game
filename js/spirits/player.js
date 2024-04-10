@@ -4,6 +4,7 @@ import { CollisionProcessor } from "../physics/collisions/collision.js";
 import { CollisionOrigin } from "../physics/collisions/collision_origin.js";
 import { Spirit } from "./spirit.js";
 import { scoreBoard } from "../gui/scoreboard.js";
+import { Bullet } from "./projectiles/bullet.js";
 
 let borderLeft = (window.innerWidth - 500) / 2;
 
@@ -43,28 +44,11 @@ export class Player extends ElementWrapper {
         scoreBoard.add(10);
     }
 
-    moveRight() {
-        let currentX = parseInt(this.element.style.left) || 0;
-        let updateX = Math.min(borderLeft + 500 - 50, currentX + this.speed)
-        this.element.style.left = updateX + 'px';
-    }
-
-    moveLeft() {
-        let currentX = parseInt(this.element.style.left) || 0;
-        let updateX = Math.max(borderLeft, currentX - this.speed)
-        this.element.style.left = updateX + 'px';
-    }
-
-    moveUp() {
-        let currentY = parseInt(this.element.style.top) || 0;
-        let updateY = Math.max(0, currentY - this.speed)
-        this.element.style.top = updateY + 'px';
-    }
-
-    moveDown() {
-        let currentY = parseInt(this.element.style.top) || 0;
-        let updateY = Math.min(window.innerWidth - 50, currentY + this.speed)
-        this.element.style.top = updateY + 'px';
+    throwProjectile() {
+        const { x, y } = this.getPosition();
+        let projectile = new Bullet();
+        projectile.setPosition(x, y);
+        return projectile
     }
 
     initEventListeners() {
@@ -72,10 +56,17 @@ export class Player extends ElementWrapper {
         let self = this;
 
         // 添加键盘按键事件监听器，使用箭头函数确保this指向player对象
-        addKeyboardListener("d", () => this.moveRight());
-        addKeyboardListener("a", () => this.moveLeft());
-        addKeyboardListener("w", () => this.moveUp());
-        addKeyboardListener("s", () => this.moveDown());
+        addKeyboardListener(" ", () => this.throwProjectile());
+        addKeyboardListener("a", () => this.throwProjectile());
+        addKeyboardListener("s", () => this.throwProjectile());
+        addKeyboardListener("d", () => this.throwProjectile());
+
+        // 添加事件监听器
+        document.addEventListener('contextmenu', () => {
+            // 阻止默认的右键菜单
+            event.preventDefault();
+            this.throwProjectile();
+        });
 
 
 

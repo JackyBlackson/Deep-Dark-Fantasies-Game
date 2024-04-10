@@ -34,6 +34,7 @@ html {
 
 .ScoreBoard {
     position: absolute;
+    z-index: 1919810;
     top: 20px;
     left: 20px;
     font-size: xx-large;
@@ -77,4 +78,15 @@ html {
 .ScoreBoardItem:after
 {
     content:" pts";
+}
+
+.Bullet {
+    position: absolute;
+    width: 10px;
+    height: 20px;
+    border-radius: 100%;
+    border-style: solid;
+    border-radius: 2px;
+    border-color: black;
+    background-color: rgb(38, 38, 38);
 }

@@ -59,7 +59,7 @@ function startGame() {
     gameLoop(); // 启动游戏主循环
     setInterval(() => {
         gameLoop();
-    }, 50);
+    }, 25);
     alert("game, start!")
 }
 
