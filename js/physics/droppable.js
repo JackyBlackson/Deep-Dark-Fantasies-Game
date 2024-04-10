@@ -20,9 +20,9 @@ export class Droppable extends ElementWrapper {
             var currentTop = parseInt(droppable.element.style.top) || 0;
             // 将 top 属性增加 pixels 像素
             let top = currentTop;
-            let speed = 3;
+            let speed = 4;  //default
             if(droppable.originalType) {
-                speed = droppable.originalType.speed;
+                speed = droppable.originalType.speed || 4;
             }
             droppable.element.style.top = (currentTop + speed) + 'px';
         });

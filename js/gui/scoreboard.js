@@ -6,7 +6,7 @@ class ScoreBoard extends ElementWrapper {
         super(element);
         this.score = 0;
         this.queue = [];
-        this.maxUpdateTicks = 10
+        this.maxUpdateTicks = 20
         this.updatePerTicks = this.maxUpdateTicks;
         this.counter = this.updatePerTicks;
         this.scoreBoardFantom = wrapper.spawnElement(ScoreBoardFantom);
@@ -28,7 +28,7 @@ class ScoreBoard extends ElementWrapper {
     }
 
     update() {
-        this.updatePerTicks = Math.max((this.maxUpdateTicks - this.queue.length), 0);
+        this.updatePerTicks = Math.max((this.maxUpdateTicks - this.queue.length * 2), 0);
         if(this.counter == 0) {
             //update
             if(this.queue.length > 0) {

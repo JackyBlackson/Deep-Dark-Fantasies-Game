@@ -25,6 +25,11 @@ html {
     height: 50px;
 }
 
+.Warebox {
+    width: 50px;
+    height: 50px;
+}
+
 .Player {
     position: absolute;
     width: 50px;
@@ -55,6 +60,31 @@ html {
 .ScoreBoard:after
 {
     content:" pts";
+}
+
+.BulletBoard {
+    position: absolute;
+    z-index: 1919810;
+    top: 20px;
+    right: 20px;
+    font-size: x-large;
+    border-width: 2px;
+    border-radius: 10px;
+    border-style: solid;
+    border-color: rgb(75, 107, 214);
+    background-color: rgb(194, 213, 253);
+    padding: 10px;
+    box-shadow: 0px 0px 50px 10px rgba(51, 51, 51, 0.165);
+}
+
+.BulletBoard:before
+{
+    content:"";
+}
+
+.BulletBoard:after
+{
+    content:" Attack";
 }
 
 .ScoreBoardFantom {

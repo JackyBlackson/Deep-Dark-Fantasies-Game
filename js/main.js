@@ -4,6 +4,8 @@ import { Spirit } from "./spirits/spirit.js";
 import { Droppable, droppable } from "./physics/droppable.js";
 import { Collision, collision } from "./physics/collisions/collision.js";
 import { scoreBoard } from "./gui/scoreboard.js";
+import { bulletBoard } from "./gui/bullet_board.js";
+import { Warebox } from "./spirits/bonuses/warebox.js";
 
 
 // 定义游戏状态
@@ -35,6 +37,9 @@ function renderGame() {
         let rand = Math.random();
         if (rand < 0.1) {
             wrapper.spawnElement(Spirit);
+        }
+        if (rand < 0.01) {
+            wrapper.spawnElement(Warebox);
         }
     } else {
         alert("NO SCREEN!")

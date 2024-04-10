@@ -5,6 +5,7 @@ import { CollisionOrigin } from "../physics/collisions/collision_origin.js";
 import { Spirit } from "./spirit.js";
 import { scoreBoard } from "../gui/scoreboard.js";
 import { Bullet } from "./projectiles/bullet.js";
+import { bulletBoard } from "../gui/bullet_board.js";
 
 let borderLeft = (window.innerWidth - 500) / 2;
 
@@ -46,8 +47,12 @@ export class Player extends ElementWrapper {
 
     throwProjectile() {
         const { x, y } = this.getPosition();
-        let projectile = new Bullet();
-        projectile.setPosition(x + 15, y);
+        let projectile = null;
+        if(bulletBoard.count > 0) {
+            projectile = new Bullet();
+            projectile.setPosition(x + 15, y);
+            bulletBoard.minus(1);
+        }
         return projectile
     }
 
@@ -60,6 +65,7 @@ export class Player extends ElementWrapper {
         addKeyboardListener("a", () => this.throwProjectile());
         addKeyboardListener("s", () => this.throwProjectile());
         addKeyboardListener("d", () => this.throwProjectile());
+        addKeyboardListener("w", () => this.throwProjectile());
 
         // 添加事件监听器
         document.addEventListener('contextmenu', () => {
