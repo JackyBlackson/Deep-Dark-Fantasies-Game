@@ -1,0 +1,33 @@
+html {
+    width: 100vw;
+    height: 100vh;
+    background-color: antiquewhite;
+    border: 0px;
+    padding: 0px;
+}
+
+
+.screen {
+    max-width: 500px;
+    height: calc(100vh - 10px);
+    background-color: aquamarine;
+    border: 0px;
+    margin: 0px auto;
+    padding: 0px;
+}
+
+.Droppable {
+    position: absolute;
+}
+
+.Spirit {
+    width: 50px;
+    height: 50px;
+}
+
+.Player {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    z-index: 114514;
+}
