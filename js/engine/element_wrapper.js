@@ -27,8 +27,6 @@ class Wrapper {
         const className = objectElement.constructor.name;
         if (this.cacheMap.has(className)) {
             this.cacheMap.get(className).push(objectElement);
-        } else {
-            console.log("this element has never cached.")
         }
     }
 

@@ -9,3 +9,7 @@ export function removeAllReferences(arr, obj) {
 export function hasMethod(obj, methodName) {
     return typeof obj[methodName] === 'function';
 }
+
+export function mountElement(element) {
+    document.getElementById('screen').appendChild(element);
+}

@@ -46,7 +46,7 @@ export class Spirit extends ElementWrapper {
     }
 
     onCollisionWithPlayer(origin, target) {
-        console.log("Spirit collapsed with PLAYER!");
+        //console.log("Spirit collapsed with PLAYER!");
         wrapper.despawnElement(origin);
     }
 }

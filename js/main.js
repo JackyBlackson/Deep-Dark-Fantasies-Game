@@ -3,6 +3,7 @@ import {Player, player} from "./spirits/player.js";
 import { Spirit } from "./spirits/spirit.js";
 import { Droppable, droppable } from "./physics/droppable.js";
 import { Collision, collision } from "./physics/collisions/collision.js";
+import { scoreBoard } from "./gui/scoreboard.js";
 
 
 // 定义游戏状态
@@ -22,6 +23,7 @@ function updateGame() {
     collision.checkCollision();
     droppable.removeElements();
     droppable.moveSpirits();
+    scoreBoard.update();
 }
 
 // 渲染游戏画面
@@ -31,7 +33,7 @@ function renderGame() {
 
     if (screen) {
         let rand = Math.random();
-        if (rand < 0.01) {
+        if (rand < 0.1) {
             wrapper.spawnElement(Spirit);
         }
     } else {

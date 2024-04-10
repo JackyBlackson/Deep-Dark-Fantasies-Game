@@ -3,6 +3,7 @@ import { addKeyboardListener } from "../utilities/event_utilities.js";
 import { CollisionProcessor } from "../physics/collisions/collision.js";
 import { CollisionOrigin } from "../physics/collisions/collision_origin.js";
 import { Spirit } from "./spirit.js";
+import { scoreBoard } from "../gui/scoreboard.js";
 
 let borderLeft = (window.innerWidth - 500) / 2;
 
@@ -39,7 +40,7 @@ export class Player extends ElementWrapper {
     }
 
     onCollisionWithEnemies(origin, target) {
-        console.log(`Player collapsed with ${target}!`)
+        scoreBoard.add(10);
     }
 
     moveRight() {
@@ -85,12 +86,12 @@ export class Player extends ElementWrapper {
                 //console.log(`x:${event.clientX}, y:${event.clientY}`)
 
                 // 更新 item 元素的位置为鼠标指针的横纵坐标
-                let x = event.clientX
+                let x = event.clientX - 25
                 x = Math.min(x, borderLeft + 500 - 50);
                 x = Math.max(x, borderLeft);
                 self.element.style.left = x + 'px';
 
-                let y = event.clientY
+                let y = event.clientY - 25
                 self.element.style.top = y + 'px';
             }
         });

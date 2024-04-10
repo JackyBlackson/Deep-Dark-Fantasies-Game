@@ -31,3 +31,50 @@ html {
     height: 50px;
     z-index: 114514;
 }
+
+.ScoreBoard {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: xx-large;
+    border-width: 2px;
+    border-radius: 10px;
+    border-style: solid;
+    border-color: rgb(214, 154, 75);
+    background-color: rgb(253, 228, 194);
+    padding: 20px;
+    box-shadow: 0px 0px 50px 10px rgba(51, 51, 51, 0.165);
+}
+
+.ScoreBoard:before
+{
+    content:"Score: ";
+}
+
+.ScoreBoard:after
+{
+    content:" pts";
+}
+
+.ScoreBoardFantom {
+    position: absolute;
+    top: 120px;
+    left: 20px;
+    font-size: large;
+}
+
+.ScoreBoardItem {
+    border-width: 2px;
+    border-radius: 10px;
+    border-style: solid;
+    border-color: rgb(230, 163, 74);
+    background-color: rgb(255, 198, 124);
+    padding: 10px;
+    box-shadow: 0px 0px 50px 10px rgba(51, 51, 51, 0.077);
+    margin-top: 5px;
+}
+
+.ScoreBoardItem:after
+{
+    content:" pts";
+}

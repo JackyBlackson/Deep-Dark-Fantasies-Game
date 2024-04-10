@@ -39,7 +39,7 @@ export class Droppable extends ElementWrapper {
             let top = parseInt(droppable.element.style.top) || 0;
     
             // 检查 top 属性是否超过了 100vh
-            if ((top + droppable.element.clientHeight) > window.innerHeight) {
+            if ((top + droppable.element.clientHeight + 10) > window.innerHeight) {
                 // 如果超过了，就从 DOM 中移除该元素
                 droppable.element.parentNode.removeChild(droppable.element);
             }
