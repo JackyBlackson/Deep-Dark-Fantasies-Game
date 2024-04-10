@@ -41,13 +41,13 @@ export class Player extends ElementWrapper {
     }
 
     onCollisionWithEnemies(origin, target) {
-        scoreBoard.add(10);
+        scoreBoard.add(-200);
     }
 
     throwProjectile() {
         const { x, y } = this.getPosition();
         let projectile = new Bullet();
-        projectile.setPosition(x, y);
+        projectile.setPosition(x + 15, y);
         return projectile
     }
 

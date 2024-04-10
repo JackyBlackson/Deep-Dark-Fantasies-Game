@@ -84,9 +84,6 @@ html {
     position: absolute;
     width: 10px;
     height: 20px;
-    border-radius: 100%;
-    border-style: solid;
-    border-radius: 2px;
-    border-color: black;
+    border-radius: 30%;
     background-color: rgb(38, 38, 38);
 }
