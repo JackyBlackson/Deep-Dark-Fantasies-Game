@@ -4,8 +4,10 @@ import { Spirit } from "./spirits/spirit.js";
 import { Droppable, droppable } from "./physics/droppable.js";
 import { Collision, collision } from "./physics/collisions/collision.js";
 import { scoreBoard } from "./gui/scoreboard.js";
-import { bulletBoard } from "./gui/bullet_board.js";
+//import { bulletBoard } from "./gui/bullet_board.js";
 import { Warebox } from "./spirits/bonuses/warebox.js";
+import {gameTps} from "./config/gameplay_config.js";
+import {roleBoard} from "./gui/role_board.js";
 
 
 // 定义游戏状态
@@ -64,7 +66,7 @@ function startGame() {
     gameLoop(); // 启动游戏主循环
     setInterval(() => {
         gameLoop();
-    }, 25);
+    }, 1000 / gameTps);
     alert("game, start!")
 }
 

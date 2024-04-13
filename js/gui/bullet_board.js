@@ -12,10 +12,9 @@ class BulletBoard extends ElementWrapper {
     summon() {
         let text = document.createElement('div');
         this.element = text;
-        text.innerText = 0;
-        BulletBoard.setTypeTo(this);
-        BulletBoard.addInterfaceTo(this);
-        mountElement(this.element);
+        text.innerText = String(0);
+        //BulletBoard.addInterfaceTo(this);
+        //mountElement(this.element);
         return text;
     }
 

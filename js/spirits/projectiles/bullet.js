@@ -5,23 +5,21 @@ import { CollisionProcessor } from "../../physics/collisions/collision.js";
 import { setPosition, mountElement } from "../../utilities/common_utilities.js";
 import { Spirit } from "../spirit.js";
 import { scoreBoard } from "../../gui/scoreboard.js";
+import {bulletSpeed} from "../../config/gameplay_config.js";
 
 export class Bullet extends ElementWrapper {
     constructor(element) {
         // debugger;
         super(element);
-        this.speed = -8;
+        this.speed = -bulletSpeed;
     }
 
     //Override
     summon() {
         var element = document.createElement('div');
         this.element = element;
-        Bullet.setTypeTo(this);
-        Bullet.addInterfaceTo(this);
         Droppable.addInterfaceTo(this);
         CollisionOrigin.addInterfaceTo(this);
-        mountElement(this.element);
         return element;
     }
 

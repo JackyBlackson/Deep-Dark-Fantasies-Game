@@ -6,14 +6,22 @@ import { Spirit } from "./spirit.js";
 import { scoreBoard } from "../gui/scoreboard.js";
 import { Bullet } from "./projectiles/bullet.js";
 import { bulletBoard } from "../gui/bullet_board.js";
+import { playerRole, roleAssets } from "../config/gameplay_config.js";
+import {roleBoard} from "../gui/role_board.js";
+
 
 let borderLeft = (window.innerWidth - 500) / 2;
+
+
 
 export class Player extends ElementWrapper {
     constructor(element = null) {
         super(element);
         this.speed = 10;
         this.useMouse = false;
+        this.role = playerRole[0];
+        this.roleIndex = 0;
+        this.setRole(0);
     }
 
     // Override
@@ -24,17 +32,29 @@ export class Player extends ElementWrapper {
         // 设置 img 元素的 src 属性
         spirit.src = "assets/images/spirits/players/default/default.png";
         // 添加 cssClass 为 spirit
-        this.addInterface(spirit);
-        this.setType(spirit);
         CollisionOrigin.addInterfaceTo(this);
         let borderLeft = (window.innerWidth - 500) / 2;
         // 设置 img 元素的 left 属性
         spirit.style.left = 250 - 25 + borderLeft + 'px';
         // 设置 img 元素的 top 属性为 距离最底部还有 50px 的位置
         spirit.style.top = (window.innerHeight - 50 - 50) + 'px';
-        // 将 img 元素添加到 id 为 'screen' 的父元素中
-        document.getElementById('screen').appendChild(spirit);
         return spirit;
+    }
+
+    changeRole() {
+        if(this.roleIndex === playerRole.length - 1) {
+            this.setRole(0);
+        } else {
+            this.setRole(this.roleIndex + 1);
+        }
+    }
+
+    setRole(roleIndex) {
+        this.roleIndex = roleIndex;
+        this.role = playerRole[roleIndex];
+        this.element.src = roleAssets[roleIndex];
+        //TODO: MAKE THE ROLE BOARD CHANGE TOO
+        roleBoard.activate(roleIndex);
     }
 
     collision() {
@@ -66,6 +86,7 @@ export class Player extends ElementWrapper {
         addKeyboardListener("s", () => this.throwProjectile());
         addKeyboardListener("d", () => this.throwProjectile());
         addKeyboardListener("w", () => this.throwProjectile());
+        addKeyboardListener("f", () => this.changeRole());
 
         // 添加事件监听器
         document.addEventListener('contextmenu', () => {

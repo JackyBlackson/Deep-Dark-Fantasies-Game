@@ -1,5 +1,4 @@
 import { ElementWrapper, wrapper } from "../engine/element_wrapper.js";
-import { mountElement } from "../utilities/common_utilities.js";
 
 class ScoreBoard extends ElementWrapper {
     constructor(element) {
@@ -21,9 +20,6 @@ class ScoreBoard extends ElementWrapper {
         let text = document.createElement('div');
         this.element = text;
         text.innerText = 0;
-        ScoreBoard.setTypeTo(this);
-        ScoreBoard.addInterfaceTo(this);
-        mountElement(text);
         return text;
     }
 
@@ -56,8 +52,6 @@ class ScoreBoardItem extends ElementWrapper {
     summon() {
         let text = document.createElement('div');
         this.element = text;
-        ScoreBoardItem.setTypeTo(this);
-        ScoreBoardItem.addInterfaceTo(this);
         
         text.innerText = 0;
         //console.log("this.points = ", this.points);
@@ -75,9 +69,6 @@ class ScoreBoardFantom extends ElementWrapper {
     summon() {
         let text = document.createElement('div');
         this.element = text;
-        ScoreBoardFantom.setTypeTo(this);
-        ScoreBoardFantom.addInterfaceTo(this);
-        mountElement(text);
         return text;
     }
 

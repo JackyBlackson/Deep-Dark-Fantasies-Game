@@ -25,8 +25,6 @@ export class Warebox extends ElementWrapper {
         // 添加 cssClass 为 spirit
         Droppable.addInterfaceTo(this);
         CollisionTarget.addInterfaceTo(this);
-        this.addInterface(spirit);
-        this.setType(spirit);
 
         // 随机生成 1 到 500 之间的一个数作为 left 属性值
         let randomLeft = Math.floor(Math.random() * 450) + 1;
@@ -38,9 +36,7 @@ export class Warebox extends ElementWrapper {
 
         // 设置 img 元素的 top 属性为 0
         spirit.style.top = '0';
-
-        // 将 img 元素添加到 id 为 'screen' 的父元素中
-        document.getElementById('screen').appendChild(spirit);
+        return spirit;
     }
 
     //Override

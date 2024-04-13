@@ -12,18 +12,24 @@ export class Collision extends ElementWrapper {
     }
 
     checkCollision() {
-        let originList = wrapper.queryAllByInterface(CollisionOrigin);
-        let targetList = wrapper.queryAllByInterface(CollisionTarget);
+        let originList = wrapper.queryAll(CollisionOrigin);
+        let targetList = wrapper.queryAll(CollisionTarget);
+        // console.log(originList);
+        // console.log(targetList);
 
         originList.forEach(origElement => {
-            targetList.forEach(targElement => {
-                if (checkOverlap(origElement, targElement)) {
-                    // console.log(origElement);
-                    // console.log(targElement);
-                    origElement.originalType.collision().with(origElement, targElement);
-                    targElement.originalType.collision().with(targElement, origElement);
-                }
-            });
+            if (origElement.element)
+                targetList.forEach(targElement => {
+                    if (
+                        targElement.element &&
+                        checkOverlap(origElement, targElement
+                        )) {
+                        // console.log(origElement);
+                        // console.log(targElement);
+                        origElement.originalType.collision().with(origElement, targElement);
+                        targElement.originalType.collision().with(targElement, origElement);
+                    }
+                });
         });
     }
 }
@@ -45,7 +51,7 @@ export class CollisionProcessor {
         const className = wrapper.classMap.get(target.originalType.constructor.name);
         //console.log(className);
         //console.log(origin);
-        if(this.callbackMap.has(className)) {
+        if (this.callbackMap.has(className)) {
             const callback = this.callbackMap.get(className);
             callback(origin, target);
         }
@@ -56,8 +62,12 @@ export class CollisionProcessor {
 
 //碰撞检测函数：如果碰撞，返回true。使用矩形框来判定
 export function checkOverlap(element1, element2) {
+    // console.log(element1);
+    // console.log(element2);
+    // debugger;
     // 获取元素1的位置和尺寸
     const rect1 = element1.element.getBoundingClientRect();
+
     // 获取元素2的位置和尺寸
     const rect2 = element2.element.getBoundingClientRect();
 
