@@ -1,5 +1,8 @@
 import { removeAllReferences } from "../utilities/common_utilities.js";
 import { getMargin } from "../utilities/common_utilities.js";
+import {mountElement} from "../utilities/common_utilities.js";
+import {generateUUID} from "../utilities/uuid.js";
+
 
 class Wrapper {
     constructor() {
@@ -12,110 +15,104 @@ class Wrapper {
         // 初始化映射
         this.classMap.set(name, className);
         // 初始化缓存
-        this.cacheMap.set(className, []);
+        this.cacheMap.set(className, new Map());
     }
 
-    cache(objectElement) {
-        const className = objectElement.constructor.name;
-        if (this.cacheMap.has(className)) {
-            this.cacheMap.get(className).push(objectElement);
-        } else {
-            this.cacheMap.set(className, [objectElement]);
+    cache(warpedElement, className) {
+        if(warpedElement.element){
+            if (!className) {
+                className = warpedElement.constructor;
+            }
+            let uuid = warpedElement.uuid;
+            if (this.cacheMap.has(className)) {
+                this.cacheMap.get(className).set(uuid, warpedElement);
+            } else {
+                let map = new Map();
+                map.set(uuid, warpedElement);
+                this.cacheMap.set(className, map);
+            }
         }
     }
 
-    uncache(objectElement) {
-        const className = objectElement.constructor.name;
-        if (this.cacheMap.has(className)) {
-            this.cacheMap.get(className).push(objectElement);
+    uncache(warpedElement, className) {
+        if(!className) {
+            className = warpedElement.constructor;
         }
+        this.cacheMap.forEach((map, className, _) => {
+            let has = map.has(warpedElement.element.aaaauuid);
+            if(map.has(warpedElement.element.aaaauuid)) {
+                map.delete(warpedElement.element.aaaauuid);
+            }
+        });
     }
 
     spawnElement(wrappedClassName) {
         const element = new wrappedClassName();
-        this.cache(element);
         return element;
     }
 
     despawnElement(wrappedElement) {
+        //debugger;
         this.uncache(wrappedElement);
         wrappedElement.remove();
+        try {
+            wrappedElement.element.parentNode.removeChild(wrappedElement.element);
+        } catch {
+            console.log("Unable to remove html element: " + wrappedElement)
+        }
     }
 
-    queryAllByType(className) {
-        const id = className.name;
-        const elements = document.querySelectorAll(`#${id}`);
-        const objects = [];
-
-        elements.forEach(element => {
-            objects.push(new className(element));
-        });
-
-        return objects;
-    }
-
-    queryByType(className) {
-        const id = className.name;
-        const elements = document.querySelectorAll(`#${id}`);
-        if (elements.length > 0) {
-            let result = new className(elements[0]);
+    queryFirst(className) {
+        const elements = this.cacheMap.get(className);
+        if (elements.size > 0) {
+            let array = Array.from(elements);
+            let result = array[0];
             return result;
         } else {
             return null;
         }
     }
 
-    queryAllByInterface(className) {
-        const cssClass = className.name;
-        const elements = document.querySelectorAll(`.${cssClass}`);
-        const objects = [];
-
-        elements.forEach(element => {
-            objects.push(new className(element));
-        });
-
-        return objects;
-    }
-
-    queryByInterface(className) {
-        const cssClass = className.name;
-        const elements = document.querySelectorAll(`.${cssClass}`);
-        if (elements.length > 0) {
-            let result = new className(elements[0]);
-            return result;
-        } else {
-            return null;
-        }
+    queryAll(className) {
+        const elements = this.cacheMap.get(className).values();
+        return Array.from(elements);
     }
 }
 
+export var wrapper = new Wrapper();
+
 export class ElementWrapper {
-    constructor(element) {
-        if (!element) { // 无参构造
+    constructor(warped) {
+        if (!warped) { // 无参构造，认为是创建了新的 type 而非 interface
+            // 设置原类型为自己，以便在接口中传递
+            this.originalType = this;
+            // 创建新的html元素
+            this.uuid = generateUUID();
             this.element = this.summon();
-        } else {
-            // 有参数，那么直接赋值
-            this.element = element;
-        }
-        // 如果：
-        // 1. 元素存在（而非没有元素的服务型接口，比如Droppable之类）
-        // 2. 元素有id属性
-        // 3. 元素的id在Wrapper中注册过
-        // 那么，为这个元素创建类型包装
-        if (this.element && this.element.hasAttribute('id') && wrapper.classMap.has(this.element.id)) {
-            const id = this.element.id;
-            const className = wrapper.classMap.get(id);
-            // 如果当前的包装类本身就是这个id
-            if (id === this.constructor.name) {
-                //那么直接赋值
-                this.originalType = this;
-            } else { // 否则用获取的类名新建包装类
-                this.originalType = new className(element);
+            // 如果成功生成了元素，那么设置元素
+            if (this.element) {
+                this.element.id = this.constructor.name;
+                this.element.aaaauuid = this.uuid;
+                // 显示html元素
+                mountElement(this.element);
+            } else {
+                this.element = null;
             }
         } else {
-            // 如果不满足上述条件，那么置空开摆
-            this.originalType = null;
+            // 有参数，则是创建接口，那么直接对 element 赋值
+            this.element = warped.element;
+            this.originalType = warped.originalType;
+            this.uuid = this.originalType.uuid;
         }
+        this.x = 0;
+        this.y = 0;
+        if (this.element) { //如果是有实体的包装类，那么必然获得接口
+            //this.constructor.addInterfaceTo(this);
+            this.element.classList.add(this.constructor.name);
+            wrapper.cache(this);
+        }
+        this.load();
+        //缓存工作已经在 __setTypeTo 和 addInterfaceTo 中完成
     }
 
     //未提供参数构造时调用，生成元素，加入dom
@@ -123,8 +120,12 @@ export class ElementWrapper {
         return null;
     }
 
+    load() {
+
+    }
+
     remove() {
-        this.element.parentNode.removeChild(this.element);
+        //do nothing
         return null;
     }
 
@@ -132,44 +133,57 @@ export class ElementWrapper {
         return null;
     }
 
-    setType(element) {
-        element.id = this.constructor.name; // 使用子类的名称
-        wrapper.cache(this);
-    }
-
-    static setTypeTo(wrapperElement) {
-        wrapperElement.element.id = this.name;
-        wrapper.cache(wrapperElement);
-    }
-
     addInterface(element) {
         element.classList.add(this.constructor.name);
-        wrapper.cache(this);
     }
 
     static addInterfaceTo(wrapperElement) {
-        wrapperElement.element.classList.add(this.name);
-        wrapper.cache(wrapperElement);
+        // new 一个新的接口，使用有参数的构造来保证不会重新覆盖类型
+        let interfaceObject = new this(wrapperElement);
+        return interfaceObject;
+        // 设置原类型为传入组件的原类型（以保证传递性）
+        // interfaceObject.originalType = wrapperElement.originalType;
+        // interfaceObject.element.classList.add(this.name);
+        // wrapper.cache(interfaceObject.element, interfaceObject);
     }
 
     getName() {
         return this.constructor.name;
     }
 
+    getClass() {
+        return this.constructor;
+    }
+
     setX(x) {
-        this.element.style.left = getMargin() + x + "px";
+        this.x = x;
+        this.originalType.element.style.left = getMargin() + x + "px";
     }
     
     setY(y) {
-        this.element.style.top = y + "px";
+        this.y = y;
+        this.originalType.element.style.top = y + "px";
     }
     
     getX() {
-        return (parseInt(this.element.style.left) || getMargin()) - getMargin();
+        let margin = getMargin();
+        let x = (parseInt(this.originalType.element.style.left) || margin) - margin
+        this.x = x;
+        return x;
     }
     
-    getY(y) {
-        return parseInt(this.element.style.top);
+    getY() {
+        let y = parseInt(this.originalType.element.style.top || 0);
+        this.y = y;
+        return y;
+    }
+
+    moveX(pixel) {
+        this.setX(this.x + pixel);
+    }
+
+    moveY(pixel) {
+        this.setX(this.y + pixel);
     }
     
     setPosition(x, y) {
@@ -185,5 +199,5 @@ export class ElementWrapper {
     }
 }
 
-export var wrapper = new Wrapper();
+
 
