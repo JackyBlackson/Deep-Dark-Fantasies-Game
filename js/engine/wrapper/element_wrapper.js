@@ -1,7 +1,7 @@
-import { removeAllReferences } from "../utilities/common_utilities.js";
-import { getMargin } from "../utilities/common_utilities.js";
-import {mountElement} from "../utilities/common_utilities.js";
-import {generateUUID} from "../utilities/uuid.js";
+import { removeAllReferences } from "../../utilities/common_utilities.js";
+import { getMargin } from "../../utilities/common_utilities.js";
+import {mountElement} from "../../utilities/common_utilities.js";
+import {generateUUID} from "../../utilities/uuid.js";
 
 
 class Wrapper {
@@ -104,14 +104,12 @@ export class ElementWrapper {
             this.originalType = warped.originalType;
             this.uuid = this.originalType.uuid;
         }
-        this.x = 0;
-        this.y = 0;
         if (this.element) { //如果是有实体的包装类，那么必然获得接口
             //this.constructor.addInterfaceTo(this);
             this.element.classList.add(this.constructor.name);
             wrapper.cache(this);
         }
-        this.load();
+        // this.load();
         //缓存工作已经在 __setTypeTo 和 addInterfaceTo 中完成
     }
 
@@ -155,49 +153,11 @@ export class ElementWrapper {
         return this.constructor;
     }
 
-    setX(x) {
-        this.x = x;
-        this.originalType.element.style.left = getMargin() + x + "px";
-    }
-    
-    setY(y) {
-        this.y = y;
-        this.originalType.element.style.top = y + "px";
-    }
-    
-    getX() {
-        let margin = getMargin();
-        let x = (parseInt(this.originalType.element.style.left) || margin) - margin
-        this.x = x;
-        return x;
-    }
-    
-    getY() {
-        let y = parseInt(this.originalType.element.style.top || 0);
-        this.y = y;
-        return y;
+    addCssClass(className) {
+        this.element.classList.add(className);
     }
 
-    moveX(pixel) {
-        this.setX(this.x + pixel);
-    }
-
-    moveY(pixel) {
-        this.setX(this.y + pixel);
-    }
-    
-    setPosition(x, y) {
-        this.setX(x);
-        this.setY(y);
-    }
-
-    getPosition() {
-        return {
-            x: this.getX(),
-            y:this.getY(),
-        }
+    removeCssClass(className) {
+        this.element.classList.remove(className);
     }
 }
-
-
-

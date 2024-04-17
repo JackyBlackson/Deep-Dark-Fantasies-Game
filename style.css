@@ -25,18 +25,35 @@ html {
     width: 50px;
     height: 50px;
     border-radius: 50%;
+    z-index: 500;
 }
 
 .Warebox {
     width: 50px;
     height: 50px;
+    z-index: 500;
 }
 
 .Player {
     position: absolute;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
+    border-radius: 25%;
+    border-width: 2px;
+    border-style: solid;
+    border-color: burlywood;
+    transform: translateX(6px) translateY(6px);
+    box-shadow: 0px 0px 50px 10px rgba(255, 119, 79, 0.55);
     z-index: 114514;
+}
+
+.TerrainTile {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    z-index: 200;
+    border-radius: 50%;
+    transform: translateX(5px) translateY(5px);
 }
 
 .ScoreBoard {
@@ -81,12 +98,12 @@ html {
 
 .BulletBoard:before
 {
-    content:"";
+    content:"Attack: ";
 }
 
 .BulletBoard:after
 {
-    content:" Attack";
+    content:" left";
 }
 
 .ScoreBoardFantom {
@@ -105,6 +122,34 @@ html {
     padding: 10px;
     box-shadow: 0px 0px 50px 10px rgba(51, 51, 51, 0.077);
     margin-top: 5px;
+}
+
+
+
+.ScoreBoardItem.positive {
+    background-color: #abffab;
+    border-color: #64af64;
+    animation: colorChangePositive 5s forwards;
+}
+
+.ScoreBoardItem.negative {
+    background-color: #ffb0b0;
+    border-color: #b65c5c;
+    animation: colorChangeNegative 5s forwards;
+}
+
+@keyframes colorChangePositive {
+    to {
+        background-color: #4ade4a; /* 结束颜色，红色 */
+        border-color: #135e13;
+    }
+}
+
+@keyframes colorChangeNegative {
+    to {
+        background-color: red; /* 结束颜色，红色 */
+        border-color: #8b1c1c;
+    }
 }
 
 .ScoreBoardItem:after
@@ -136,7 +181,7 @@ html {
     border-width: 6px;
     border-style: solid;
     border-color: rgb(255, 151, 12);
-    box-shadow: 0px 0px 50px 10px rgba(51, 51, 51, 0.077);
+    box-shadow: 0px 0px 15px 10px rgba(256, 51, 51, 0.2);
 }
 
 .RoleBoard {

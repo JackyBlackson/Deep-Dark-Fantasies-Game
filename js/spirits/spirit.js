@@ -1,11 +1,12 @@
-import { wrapper, ElementWrapper } from "../engine/element_wrapper.js";
-import { CollisionTarget } from "../physics/collisions/collision_target.js";
-import { Droppable } from "../physics/droppable.js";
+import { wrapper, ElementWrapper } from "../engine/wrapper/element_wrapper.js";
+import { CollisionTarget } from "../engine/physics/collisions/collision_target.js";
+import { Droppable } from "../engine/physics/droppable.js";
 import { Player } from "./player.js";
-import { CollisionProcessor } from "../physics/collisions/collision.js";
+import { CollisionProcessor } from "../engine/physics/collisions/collision.js";
 import { tileDefaultSpeed } from "../config/gameplay_config.js";
+import {BasicEntity} from "../engine/entity/basic_entity.js";
 
-export class Spirit extends ElementWrapper {
+export class Spirit extends BasicEntity {
     constructor(element) {
         super(element);
         this.speed = tileDefaultSpeed;

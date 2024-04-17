@@ -1,7 +1,7 @@
-import { wrapper, ElementWrapper } from "../../engine/element_wrapper.js";
+import { wrapper, ElementWrapper } from "../../wrapper/element_wrapper.js";
 import { CollisionOrigin } from "./collision_origin.js";
 import { CollisionTarget } from "./collision_target.js";
-import { hasMethod } from "../../utilities/common_utilities.js";
+import { hasMethod } from "../../../utilities/common_utilities.js";
 
 export class Collision extends ElementWrapper {
     constructor(element) {

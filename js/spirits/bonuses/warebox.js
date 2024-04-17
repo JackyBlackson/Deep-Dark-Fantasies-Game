@@ -1,17 +1,18 @@
-import { ElementWrapper, wrapper } from "../../engine/element_wrapper.js";
-import { CollisionTarget } from "../../physics/collisions/collision_target.js";
-import { CollisionProcessor } from "../../physics/collisions/collision.js";
-import { Droppable } from "../../physics/droppable.js";
-import { tileDefaultSpeed } from "../../config/gameplay_config.js";
+import { ElementWrapper, wrapper } from "../../engine/wrapper/element_wrapper.js";
+import { CollisionTarget } from "../../engine/physics/collisions/collision_target.js";
+import { CollisionProcessor } from "../../engine/physics/collisions/collision.js";
+import { Droppable } from "../../engine/physics/droppable.js";
+import {tileDefaultSpeed, wareboxSpeed} from "../../config/gameplay_config.js";
 import { Player } from "../player.js";
 import { Bullet } from "../projectiles/bullet.js";
 import { bulletBoard } from "../../gui/bullet_board.js";
 import { wareboxBulletCount } from "../../config/gameplay_config.js";
+import {BasicEntity} from "../../engine/entity/basic_entity.js";
 
-export class Warebox extends ElementWrapper {
+export class Warebox extends BasicEntity {
     constructor(element) {
         super(element);
-        this.speed = tileDefaultSpeed;
+        this.speed = wareboxSpeed;
     }
 
     summon() {

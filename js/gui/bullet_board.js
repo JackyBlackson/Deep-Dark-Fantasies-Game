@@ -1,5 +1,4 @@
-import { ElementWrapper, wrapper } from "../engine/element_wrapper.js";
-import { mountElement } from "../utilities/common_utilities.js";
+import { ElementWrapper, wrapper } from "../engine/wrapper/element_wrapper.js";
 
 class BulletBoard extends ElementWrapper {
     constructor(element) {

@@ -1,5 +1,5 @@
-import { wrapper,  ElementWrapper } from "../engine/element_wrapper.js";
-import {gameTps} from "../config/gameplay_config.js";
+import { wrapper,  ElementWrapper } from "../wrapper/element_wrapper.js";
+import {gameSettings, gameTps} from "../../config/gameplay_config.js";
 
 export class Droppable extends ElementWrapper {
     //static name = "Droppable";
@@ -17,15 +17,17 @@ export class Droppable extends ElementWrapper {
         var droppables = wrapper.queryAll(Droppable);
         // 循环遍历每个元素，修改其 top 属性
         droppables.forEach(function(droppable) {
-            if(droppable.element){// 获取当前元素的 top 属性值，并转换为数字
-            var currentTop = parseInt(droppable.element.style.top) || 0;
-            // 将 top 属性增加 pixels 像素
-            let top = currentTop;
-            let speed = 4;  //default
-            if(droppable.originalType) {
-                speed = droppable.originalType.speed || 4;
+            if(droppable.element) {// 获取当前元素的 top 属性值，并转换为数字
+                var currentTop = parseInt(droppable.element.style.top) || 0;
+                // 将 top 属性增加 pixels 像素
+                let top = currentTop;
+                let speed = 4;  //default
+                if (droppable.originalType) {
+                    speed = droppable.originalType.speed || 4;
+                }
+                //droppable.element.style.top = (currentTop + speed / gameTps) + 'px';}
+                droppable.originalType.setY(currentTop + speed / gameSettings.system.tps)
             }
-            droppable.element.style.top = (currentTop + speed / gameTps) + 'px';}
         });
     }
     

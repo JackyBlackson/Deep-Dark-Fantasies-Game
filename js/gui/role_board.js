@@ -1,4 +1,4 @@
-import { ElementWrapper, wrapper } from "../engine/element_wrapper.js";
+import { ElementWrapper, wrapper } from "../engine/wrapper/element_wrapper.js";
 import {playerRole, roleAssets} from "../config/gameplay_config.js";
 
 export class RoleBoard extends ElementWrapper {

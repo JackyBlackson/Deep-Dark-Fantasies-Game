@@ -1,20 +1,21 @@
-import { ElementWrapper, wrapper } from "../engine/element_wrapper.js";
+import { ElementWrapper, wrapper } from "../engine/wrapper/element_wrapper.js";
 import { addKeyboardListener } from "../utilities/event_utilities.js";
-import { CollisionProcessor } from "../physics/collisions/collision.js";
-import { CollisionOrigin } from "../physics/collisions/collision_origin.js";
+import { CollisionProcessor } from "../engine/physics/collisions/collision.js";
+import { CollisionOrigin } from "../engine/physics/collisions/collision_origin.js";
 import { Spirit } from "./spirit.js";
 import { scoreBoard } from "../gui/scoreboard.js";
 import { Bullet } from "./projectiles/bullet.js";
 import { bulletBoard } from "../gui/bullet_board.js";
-import { playerRole, roleAssets } from "../config/gameplay_config.js";
+import {gameSettings, playerRole, roleAssets} from "../config/gameplay_config.js";
 import {roleBoard} from "../gui/role_board.js";
+import {BasicEntity} from "../engine/entity/basic_entity.js";
 
 
 let borderLeft = (window.innerWidth - 500) / 2;
 
 
 
-export class Player extends ElementWrapper {
+export class Player extends BasicEntity {
     constructor(element = null) {
         super(element);
         this.speed = 10;
@@ -41,11 +42,19 @@ export class Player extends ElementWrapper {
         return spirit;
     }
 
-    changeRole() {
-        if(this.roleIndex === playerRole.length - 1) {
-            this.setRole(0);
+    changeRole(right) {
+        if (right){
+            if (this.roleIndex === playerRole.length - 1) {
+                this.setRole(0);
+            } else {
+                this.setRole(this.roleIndex + 1);
+            }
         } else {
-            this.setRole(this.roleIndex + 1);
+            if (this.roleIndex === 0) {
+                this.setRole(playerRole.length - 1);
+            } else {
+                this.setRole(this.roleIndex - 1);
+            }
         }
     }
 
@@ -68,10 +77,18 @@ export class Player extends ElementWrapper {
     throwProjectile() {
         const { x, y } = this.getPosition();
         let projectile = null;
-        if(bulletBoard.count > 0) {
-            projectile = new Bullet();
-            projectile.setPosition(x + 15, y);
+        let speedx = gameSettings.entities.bullet.speedX;
+        let speedy = gameSettings.entities.bullet.speedY;
+        if(this.roleIndex === 0 && bulletBoard.count >= 1) {
+            Bullet.create(x + 15, y, 0, -speedy);
             bulletBoard.minus(1);
+        } else if (this.roleIndex === 1 && bulletBoard.count >= 5) {
+            Bullet.create(x + 15, y, -1 * speedx, -speedy);
+            Bullet.create(x + 15, y, 0, -speedy);
+            Bullet.create(x + 15, y, speedx, -speedy);
+            bulletBoard.minus(4);
+        } else {
+            console.log("summon projectiles")
         }
         return projectile
     }
@@ -82,11 +99,17 @@ export class Player extends ElementWrapper {
 
         // 添加键盘按键事件监听器，使用箭头函数确保this指向player对象
         addKeyboardListener(" ", () => this.throwProjectile());
-        addKeyboardListener("a", () => this.throwProjectile());
+
         addKeyboardListener("s", () => this.throwProjectile());
         addKeyboardListener("d", () => this.throwProjectile());
-        addKeyboardListener("w", () => this.throwProjectile());
-        addKeyboardListener("f", () => this.changeRole());
+        addKeyboardListener("a", () => this.changeRole(false));
+        addKeyboardListener("f", () => this.changeRole(true));
+
+        addKeyboardListener("q", () => this.setRole(0));
+        addKeyboardListener("w", () => this.setRole(1));
+        addKeyboardListener("e", () => this.setRole(2));
+        addKeyboardListener("r", () => this.setRole(3));
+
 
         // 添加事件监听器
         document.addEventListener('contextmenu', () => {

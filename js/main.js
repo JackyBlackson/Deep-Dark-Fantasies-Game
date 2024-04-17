@@ -1,19 +1,31 @@
-import { wrapper } from "./engine/element_wrapper.js";
+import { wrapper } from "./engine/wrapper/element_wrapper.js";
 import {Player, player} from "./spirits/player.js";
 import { Spirit } from "./spirits/spirit.js";
-import { Droppable, droppable } from "./physics/droppable.js";
-import { Collision, collision } from "./physics/collisions/collision.js";
+import { Droppable, droppable } from "./engine/physics/droppable.js";
+import { Collision, collision } from "./engine/physics/collisions/collision.js";
 import { scoreBoard } from "./gui/scoreboard.js";
 //import { bulletBoard } from "./gui/bullet_board.js";
 import { Warebox } from "./spirits/bonuses/warebox.js";
-import {gameTps} from "./config/gameplay_config.js";
+import {gameSettings, gameTps} from "./config/gameplay_config.js";
 import {roleBoard} from "./gui/role_board.js";
+import {AutoMoveSystem} from "./engine/systems/AutoMoveSystem.js";
+import {TerrainGenerator} from "./engine/generators/terrain_generator.js";
+import {TerrainTile} from "./entities/terrain_tile.js";
 
 
 // 定义游戏状态
 let gameState = {
     // 在这里定义游戏需要的各种状态和变量
 };
+
+const generator = new TerrainGenerator(
+    gameSettings.system.seed,
+    gameSettings.system.generator.threshold,
+    TerrainTile,
+    gameSettings.system.generator.speed,
+    gameSettings.system.generator.gridWidth,
+    gameSettings.system.generator.gridHeight,
+);
 
 // 初始化游戏
 function initGame() {
@@ -24,7 +36,9 @@ function initGame() {
 // 更新游戏状态
 function updateGame() {
     // 在这里更新游戏状态，处理用户输入等
+    generator.update();
     collision.checkCollision();
+    AutoMoveSystem.update();
     droppable.removeElements();
     droppable.moveSpirits();
     scoreBoard.update();
@@ -37,7 +51,7 @@ function renderGame() {
 
     if (screen) {
         let rand = Math.random();
-        if (rand < 0.1) {
+        if (rand < 0.02) {
             wrapper.spawnElement(Spirit);
         }
         if (rand < 0.01) {
@@ -66,7 +80,7 @@ function startGame() {
     gameLoop(); // 启动游戏主循环
     setInterval(() => {
         gameLoop();
-    }, 1000 / gameTps);
+    }, 1000 / gameSettings.system.tps);
     alert("game, start!")
 }
 
