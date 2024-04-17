@@ -14,7 +14,8 @@ export class TerrainGenerator {
             0,
             [
                 {diff: 10, loud: 5, octave: 5},
-                {diff: 10, loud: 3, octave: 2}
+                {diff: 10, loud: 3, octave: 2},
+                {diff: 10, loud: 1, octave: 0.5}
             ]
         );
         this.y = 0;

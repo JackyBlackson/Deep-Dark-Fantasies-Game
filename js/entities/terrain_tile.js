@@ -4,6 +4,9 @@ import {CollisionTarget} from "../engine/physics/collisions/collision_target.js"
 import {CollisionProcessor} from "../engine/physics/collisions/collision.js";
 import {BasicEntity} from "../engine/entity/basic_entity.js";
 import {Droppable} from "../engine/physics/droppable.js";
+import {Player} from "../spirits/player.js";
+import {wrapper} from "../engine/wrapper/element_wrapper.js";
+import {scoreBoard} from "../gui/scoreboard.js";
 
 export class TerrainTile extends BasicEntity {
     constructor(element) {
@@ -12,6 +15,8 @@ export class TerrainTile extends BasicEntity {
         Droppable.addInterfaceTo(this);
         this.speed = 200;
         this.collisionTarget = CollisionTarget.addInterfaceTo(this);
+        this.collisionProcessor = new CollisionProcessor()
+            .bind(Player, this.onCollisionWithPlayer);
     }
 
     static create(x, y, speedY) {
@@ -30,6 +35,11 @@ export class TerrainTile extends BasicEntity {
     }
 
     collision() {
-        return new CollisionProcessor();
+        return this.collisionProcessor;
+    }
+
+    onCollisionWithPlayer(self, that) {
+        scoreBoard.add(-15)
+        wrapper.despawnElement(self);
     }
 }

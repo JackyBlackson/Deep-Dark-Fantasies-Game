@@ -9,6 +9,7 @@ import { bulletBoard } from "../gui/bullet_board.js";
 import {gameSettings, playerRole, roleAssets} from "../config/gameplay_config.js";
 import {roleBoard} from "../gui/role_board.js";
 import {BasicEntity} from "../engine/entity/basic_entity.js";
+import {TerrainTile} from "../entities/terrain_tile.js";
 
 
 let borderLeft = (window.innerWidth - 500) / 2;
@@ -23,6 +24,9 @@ export class Player extends BasicEntity {
         this.role = playerRole[0];
         this.roleIndex = 0;
         this.setRole(0);
+        this.collisionProcessor = new CollisionProcessor()
+            .bind(Spirit, this.onCollisionWithEnemies)
+        ;
     }
 
     // Override
@@ -67,11 +71,11 @@ export class Player extends BasicEntity {
     }
 
     collision() {
-        return new CollisionProcessor().bind(Spirit, this.onCollisionWithEnemies);
+        return this.collisionProcessor;
     }
 
     onCollisionWithEnemies(origin, target) {
-        scoreBoard.add(-200);
+        scoreBoard.add(-30);
     }
 
     throwProjectile() {

@@ -10,6 +10,8 @@ export class Spirit extends BasicEntity {
     constructor(element) {
         super(element);
         this.speed = tileDefaultSpeed;
+        this.collisionProcessor = new CollisionProcessor()
+            .bind(Player, this.onCollisionWithPlayer);
     }
 
     //Override
@@ -41,7 +43,7 @@ export class Spirit extends BasicEntity {
 
     //Override
     collision() {
-        return new CollisionProcessor().bind(Player, this.onCollisionWithPlayer);
+        return this.collisionProcessor;
     }
 
     onCollisionWithPlayer(origin, target) {
